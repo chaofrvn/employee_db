@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    container_name: employee_db
+    environment:
+      POSTGRES_DB: employees
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    ports:
+      - "5433:5433"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d employees"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
